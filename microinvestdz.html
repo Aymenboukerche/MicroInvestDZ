@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MicroInvestDZ</title>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>
+    (function() {
+      emailjs.init("-6E2NrPTBi9aJHO_e"); // Your public key
+    })();
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #27ae60;
+      --primary-dark: #219653;
+      --secondary: #2ecc71;
+      --dark: #2c3e50;
+      --light: #f4f4f4;
+      --white: #ffffff;
+      --gray: #ecf0f1;
+      --text: #333333;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    h1, h2, h3, h4 {
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    button {
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    /* Navigation */
+    nav {
+      background: var(--primary);
+      color: var(--white);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    
+    .nav-menu {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+    }
+    
+    .nav-menu li {
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 4px;
+      transition: background 0.3s ease;
+    }
+    
+    .nav-menu li:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .lang-switcher {
+      background: var(--white);
+      color: var(--primary);
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      border: none;
+      font-weight: 600;
+    }
+    
+    .hamburger {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    
+    /* Hero Section */
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: var(--white);
+      text-align: center;
+      padding: 150px 20px 100px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+    
+    header h1 {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      animation: fadeInDown 1s ease;
+    }
+    
+    header p {
+      font-size: 1.25rem;
+      margin-bottom: 30px;
+      animation: fadeInUp 1s ease;
+    }
+    
+    .cta-button {
+      background: var(--white);
+      padding: 15px 30px;
+      border: none;
+      border-radius: 50px;
+      color: var(--primary);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      animation: fadeIn 1.5s ease;
+    }
+    
+    /* Sections */
+    section {
+      padding: 80px 20px;
+      scroll-margin-top: 80px;
+    }
+    
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+      color: var(--dark);
+      position: relative;
+    }
+    
+    .section-title:after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: var(--primary);
+      margin: 15px auto;
+      border-radius: 2px;
+    }
+    
+    .section-content {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    /* About Section */
+    .about-content {
+      text-align: center;
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+    
+    /* Vision/Timeline Section */
+    .vision-section {
+      background: var(--gray);
+    }
+    
+    .timeline {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .step {
+      background: var(--white);
+      padding: 25px 20px;
+      border-radius: 10px;
+      width: 200px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    
+    .step.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .step:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+    
+    .step h3 {
+      margin: 15px 0;
+      font-size: 1.2rem;
+    }
+    
+    .step-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+    }
+    
+    /* How It Works Section */
+    .how-content {
+      text-align: center;
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+    
+    .roles-container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 40px;
+    }
+    
+    .role-card {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 30px;
+      width: 300px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
+    }
+    
+    .role-card:hover {
+      transform: translateY(-10px);
+    }
+    
+    .role-card h3 {
+      color: var(--primary);
+      margin-bottom: 15px;
+    }
+    
+    /* Contact Section */
+    .contact-section {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+      color: var(--white);
+    }
+    
+    .contact-section .section-title {
+      color: var(--white);
+    }
+    
+    .contact-section .section-title:after {
+      background: var(--white);
+    }
+    
+    .contact-content {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .pre-register-btn {
+      background: var(--white);
+      padding: 15px 30px;
+      border: none;
+      border-radius: 50px;
+      color: var(--primary);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--dark);
+      color: var(--white);
+      text-align: center;
+      padding: 30px 20px;
+    }
+    
+    /* Modal */
+    #modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    #modal .content {
+      background: var(--white);
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      position: relative;
+      box-shadow: 0 5px 30px rgba(0,0,0,0.2);
+      animation: scaleIn 0.3s ease;
+    }
+    
+    #modal .close {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: #777;
+      transition: color 0.3s ease;
+    }
+    
+    #modal .close:hover {
+      color: var(--primary);
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-family: inherit;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+    
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      outline: none;
+    }
+    
+    .submit-btn {
+      background: var(--primary);
+      color: var(--white);
+      padding: 12px 25px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+    }
+    
+    .submit-btn:hover {
+      background: var(--primary-dark);
+    }
+    
+    .success-message {
+      display: none;
+      color: var(--primary);
+      text-align: center;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .hamburger {
+        display: block;
+      }
+      
+      .nav-menu {
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        background: var(--primary);
+        width: 100%;
+        height: calc(100vh - 70px);
+        flex-direction: column;
+        gap: 0;
+        padding: 30px;
+        transition: left 0.3s ease;
+      }
+      
+      .nav-menu.active {
+        left: 0;
+      }
+      
+      .nav-menu li {
+        padding: 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+      }
+      
+      header h1 {
+        font-size: 2.2rem;
+      }
+      
+      header p {
+        font-size: 1.1rem;
+      }
+      
+      .step {
+        width: 100%;
+        max-width: 300px;
+      }
+      
+      .roles-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .role-card {
+        width: 100%;
+        max-width: 400px;
+      }
+    }
+    
+    /* Scroll Progress */
+    .progress-container {
+      position: fixed;
+      top: 70px;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 1000;
+    }
+    
+    .progress-bar {
+      height: 4px;
+      background: var(--secondary);
+      width: 0%;
+      transition: width 0.2s ease;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <div class="logo">MicroInvestDZ</div>
+      <ul class="nav-menu">
+        <li data-key="home">Home</li>
+        <li data-key="about">About</li>
+        <li data-key="vision">Vision</li>
+        <li data-key="how">How It Works</li>
+        <li data-key="contact">Contact</li>
+      </ul>
+      <div class="nav-actions">
+        <select id="langSwitcher" class="lang-switcher" onchange="switchLang(this.value)">
+          <option value="en">EN</option>
+          <option value="fr">FR</option>
+          <option value="ar">AR</option>
+        </select>
+        <div class="hamburger" onclick="toggleMenu()">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Scroll Progress -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- Hero -->
+  <header id="home">
+    <div class="hero-content">
+      <h1 id="hero-title">Invest in Algeria's Future</h1>
+      <p id="hero-sub">Micro-investments for startups and small businesses</p>
+      <button class="cta-button" onclick="openModal()" id="join-btn">Join the Movement</button>
+    </div>
+  </header>
+
+  <!-- About -->
+  <section id="about">
+    <h2 id="about-title" class="section-title">About MicroInvestDZ</h2>
+    <div class="section-content">
+      <p id="about-text" class="about-content">We are building Algeria's first alternative stock market for startups and small businesses. A secure and transparent platform where anyone can invest small and grow big. Our mission is to empower Algerian entrepreneurs and investors by creating opportunities for growth and innovation.</p>
+    </div>
+  </section>
+
+  <!-- Vision -->
+  <section id="vision" class="vision-section">
+    <h2 id="vision-title" class="section-title">Our Path</h2>
+    <div class="timeline">
+      <div class="step">
+        <div class="step-icon">💡</div>
+        <h3>Idea</h3>
+        <p>Born in 2025 with a vision to transform Algeria's investment landscape.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">⚙️</div>
+        <h3>Prototype</h3>
+        <p>Website development and concept validation with early adopters.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">💵</div>
+        <h3>Funding</h3>
+        <p>Pre-seed investment round and onboarding early investors.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">📈</div>
+        <h3>Growth</h3>
+        <p>Expanding our network of partners and platform capabilities.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">🏦</div>
+        <h3>Marketplace</h3>
+        <p>Official launch of the platform for all users across Algeria.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how">
+    <h2 id="how-title" class="section-title">How It Works</h2>
+    <div class="section-content">
+      <p id="how-text" class="how-content">Choose your role: support startups or grow your business. MicroInvestDZ connects innovators with investors in a transparent and accessible way.</p>
+      
+      <div class="roles-container">
+        <div class="role-card">
+          <h3>For Investors</h3>
+          <p>Discover promising startups, invest with amounts that work for you, and track your portfolio's growth with transparent reporting.</p>
+        </div>
+        <div class="role-card">
+          <h3>For Entrepreneurs</h3>
+          <p>Showcase your business, access a new funding source, and connect with a community that believes in your vision.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="contact-section">
+    <h2 id="contact-title" class="section-title">Stay Connected</h2>
+    <div class="section-content">
+      <p id="contact-text" class="contact-content">Sign up to get notified when we launch and be among the first to experience the future of investing in Algeria.</p>
+      <button class="pre-register-btn" onclick="openModal()" id="pre-btn">Pre-Register Now</button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 MicroInvestDZ | Designed for Algeria's future</p>
+  </footer>
+
+  <!-- Modal Form -->
+  <div id="modal">
+    <div class="content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="form-title">Pre-Register for MicroInvestDZ</h2>
+
+      <form id="preForm">
+        <div class="form-group">
+          <label id="lbl-name">Full Name:</label>
+          <input type="text" name="name" required>
+        </div>
+
+        <div class="form-group">
+          <label id="lbl-email">Email:</label>
+          <input type="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+          <label id="lbl-role">I am interested as:</label>
+          <select id="role" name="role" onchange="toggleRole()" required>
+            <option value="">Select...</option>
+            <option value="Investor">Investor</option>
+            <option value="Entrepreneur">Entrepreneur</option>
+          </select>
+        </div>
+
+        <div id="investorFields" style="display:none;">
+          <div class="form-group">
+            <label id="lbl-range">Investment Range (DZD):</label>
+            <select name="investment_range">
+              <option value="<200k">Less than 200,000 DZD</option>
+              <option value="200k-1M">200,000 – 1,000,000 DZD</option>
+              <option value="1M-5M">1,000,000 – 5,000,000 DZD</option>
+              <option value=">5M">More than 5,000,000 DZD</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="entrepreneurFields" style="display:none;">
+          <div class="form-group">
+            <label id="lbl-project">Project / Company Name:</label>
+            <input type="text" name="project_name">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label id="lbl-msg">Message (Optional):</label>
+          <textarea name="message" rows="3"></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submit-btn">Submit</button>
+      </form>
+
+      <p id="thanksMsg" class="success-message">
+        ✅ Thanks for pre-registering! We'll contact you soon.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // DOM Elements
+    const navMenu = document.querySelector('.nav-menu');
+    const progressBar = document.getElementById('progressBar');
+    const steps = document.querySelectorAll('.step');
+    const form = document.getElementById('preForm');
+    const thanksMsg = document.getElementById('thanksMsg');
+    
+    // Toggle mobile menu
+    function toggleMenu() {
+      navMenu.classList.toggle('active');
+    }
+    
+    // Modal functions
+    function openModal() {
+      document.getElementById("modal").style.display = "flex";
+      document.body.style.overflow = "hidden";
+    }
+    
+    function closeModal() {
+      document.getElementById("modal").style.display = "none";
+      document.body.style.overflow = "auto";
+    }
+    
+    // Toggle role-specific fields in form
+    function toggleRole() {
+      const role = document.getElementById("role").value;
+      document.getElementById("investorFields").style.display = role === "Investor" ? "block" : "none";
+      document.getElementById("entrepreneurFields").style.display = role === "Entrepreneur" ? "block" : "none";
+    }
+    
+    // Scroll progress indicator
+    window.onscroll = function() {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      progressBar.style.width = scrolled + "%";
+    };
+    
+    // Animate timeline steps on scroll
+    function checkScroll() {
+      steps.forEach(step => {
+        const stepTop = step.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+        
+        if (stepTop < windowHeight * 0.9) {
+          step.classList.add('visible');
+        }
+      });
+    }
+    
+    // Smooth scrolling for navigation
+    document.querySelectorAll('.nav-menu li').forEach(item => {
+      item.addEventListener('click', function() {
+        const targetId = this.getAttribute('data-key');
+        const targetSection = document.getElementById(targetId);
+        
+        if (targetSection) {
+          targetSection.scrollIntoView({ behavior: 'smooth' });
+          // Close mobile menu if open
+          navMenu.classList.remove('active');
+        }
+      });
+    });
+    
+    // Handle form submission with EmailJS
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      
+      // Show loading state
+      const submitBtn = document.getElementById('submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+      
+      // Send email using EmailJS
+      emailjs.sendForm("service_c77xuk8", "template_fu4yfwr", this)
+        .then(function() {
+          thanksMsg.style.display = "block";
+          form.reset();
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Submit';
+          
+          // Close modal after 3 seconds
+          setTimeout(() => {
+            thanksMsg.style.display = "none";
+            closeModal();
+          }, 3000);
+        }, function(error) {
+          alert("There was an error submitting the form. Please try again.");
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Submit';
+          console.error("EmailJS error:", error);
+        });
+    });
+    
+    // Language translations
+    const translations = {
+      en: {
+        home:"Home", about:"About", vision:"Vision", contact:"Contact", how:"How It Works",
+        "hero-title":"Invest in Algeria's Future",
+        "hero-sub":"Micro-investments for startups and small businesses",
+        "join-btn":"Join the Movement",
+        "about-title":"About MicroInvestDZ",
+        "about-text":"We are building Algeria's first alternative stock market for startups and small businesses. A secure and transparent platform where anyone can invest small and grow big. Our mission is to empower Algerian entrepreneurs and investors by creating opportunities for growth and innovation.",
+        "vision-title":"Our Path",
+        "how-title":"How It Works",
+        "how-text":"Choose your role: support startups or grow your business. MicroInvestDZ connects innovators with investors in a transparent and accessible way.",
+        "contact-title":"Stay Connected",
+        "contact-text":"Sign up to get notified when we launch and be among the first to experience the future of investing in Algeria.",
+        "pre-btn":"Pre-Register Now",
+        "form-title":"Pre-Register for MicroInvestDZ",
+        "lbl-name":"Full Name:",
+        "lbl-email":"Email:",
+        "lbl-role":"I am interested as:",
+        "lbl-range":"Investment Range (DZD):",
+        "lbl-project":"Project / Company Name:",
+        "lbl-msg":"Message (Optional):",
+        "submit-btn":"Submit"
+      },
+      fr: {
+        home:"Accueil", about:"À propos", vision:"Vision", contact:"Contact", how:"Comment ça marche",
+        "hero-title":"Investir dans l'avenir de l'Algérie",
+        "hero-sub":"Micro-investissements pour startups et PME",
+        "join-btn":"Rejoignez le mouvement",
+        "about-title":"À propos de MicroInvestDZ",
+        "about-text":"Nous construisons le premier marché alternatif algérien pour les startups et les petites entreprises. Une plateforme sécurisée et transparente où chacun peut investir petit et grandir rapidement. Notre mission est d'autonomiser les entrepreneurs et investisseurs algériens en créant des opportunités de croissance et d'innovation.",
+        "vision-title":"Notre chemin",
+        "how-title":"Comment ça marche",
+        "how-text":"Choisissez votre rôle: soutenir les startups ou développer votre entreprise. MicroInvestDZ connecte les innovateurs avec les investisseurs de manière transparente et accessible.",
+        "contact-title":"Restez connectés",
+        "contact-text":"Inscrivez-vous pour être averti du lancement et soyez parmi les premiers à découvrir l'avenir de l'investissement en Algérie.",
+        "pre-btn":"Pré-inscription",
+        "form-title":"Pré-inscription à MicroInvestDZ",
+        "lbl-name":"Nom complet:",
+        "lbl-email":"Email:",
+        "lbl-role":"Je suis intéressé en tant que:",
+        "lbl-range":"Montant d'investissement (DZD):",
+        "lbl-project":"Nom du projet / entreprise:",
+        "lbl-msg":"Message (Optionnel):",
+        "submit-btn":"Envoyer"
+      },
+      ar: {
+        home:"الرئيسية", about:"حول", vision:"الرؤية", contact:"اتصال", how:"كيف يعمل",
+        "hero-title":"استثمر في مستقبل الجزائر",
+        "hero-sub":"استثمارات صغيرة للشركات الناشئة والصغيرة",
+        "join-btn":"انضم للحركة",
+        "about-title":"حول MicroInvestDZ",
+        "about-text":"نحن نبني أول سوق بديل في الجزائر للشركات الناشئة والصغيرة. منصة آمنة وشفافة حيث يمكن لأي شخص أن يستثمر بمبالغ صغيرة وينمو بشكل كبير. مهمتنا هي تمكين رواد الأعمال والمستثمرين الجزائريين من خلال خلق فرص للنمو والابتكار.",
+        "vision-title":"مسارنا",
+        "how-title":"كيف يعمل",
+        "how-text":"اختر دورك: دعم الشركات الناشئة أو تنمية عملك. MicroInvestDZ يوصل المبتكرين مع المستثمرين بطريقة شفافة وسهلة الوصول.",
+        "contact-title":"ابق على تواصل",
+        "contact-text":"سجل ليصلك إشعار عند الإطلاق وكن among الأول لتجربة مستقبل الاستثمار في الجزائر.",
+        "pre-btn":"تسجيل مسبق",
+        "form-title":"تسجيل مسبق في MicroInvestDZ",
+        "lbl-name":"الاسم الكامل:",
+        "lbl-email":"البريد الإلكتروني:",
+        "lbl-role":"أنا مهتم كـ:",
+        "lbl-range":"نطاق الاستثمار (دج):",
+        "lbl-project":"اسم المشروع / الشركة:",
+        "lbl-msg":"رسالة (اختياري):",
+        "submit-btn":"إرسال"
+      }
+    };
+
+    function switchLang(lang) {
+      document.querySelectorAll("[data-key]").forEach(el => {
+        const key = el.getAttribute("data-key");
+        if (translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+      
+      for (const id in translations[lang]) {
+        if (document.getElementById(id)) {
+          document.getElementById(id).textContent = translations[lang][id];
+        }
+      }
+      
+      // RTL for Arabic
+      document.body.dir = (lang === "ar") ? "rtl" : "ltr";
+      
+      // Close mobile menu if open
+      navMenu.classList.remove('active');
+    }
+    
+    // Initialize page
+    window.addEventListener('load', function() {
+      checkScroll(); // Check if steps are already in view on load
+    });
+    
+    window.addEventListener('scroll', checkScroll);
+    
+    // Close modal if clicked outside
+    window.addEventListener('click', function(e) {
+      const modal = document.getElementById('modal');
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
